@@ -92,6 +92,8 @@ final class AppTest extends \PHPUnit\Framework\TestCase
 This library calls any global PHP function, not only those that are built-in.
 
 ```php
+use PHP\PHP;
+
 // PHP Built-in functions
 PHP::http_build_query(['foo' => 'bar']); // returns 'foo=bar'
 PHP::json_encode(['foo' => 'bar']); // returns '{"foo": "bar"}'
@@ -103,6 +105,38 @@ PHP::json_decode('{"foo": "bar"}'); // return ['foo' => 'bar']
 PHP::wp_redirect('/') // redirects to home
 
 // Literaly, any global function, built-in or not, could be listed here
+```
+
+## Helper classes
+
+If you do not want to use Mockery, or if you are working on test environment that does not fit with it, you may use some helper classes that come with this package
+
+### IgnoreMissing
+
+It works the same way, but it will ignore a function if it does not exist.
+
+This can be useful if you have a function that you cannot mockup for some reason.
+
+```php
+use PHP\IgnoreMissing as PHP;
+
+// PHP Built-in functions
+PHP::http_build_query(['foo' => 'bar']); // returns 'foo=bar'
+PHP::foo(); // returns null instead of triggering a "Call to undefined function" error
+```
+
+### IgnoreAlways
+
+Use it if, for some reason, you want to directly skip all function calls.
+
+It does not matter if the function exists or not.
+
+```php
+use PHP\IgnoreAlways as PHP;
+
+// PHP Built-in functions
+PHP::http_build_query(['foo' => 'bar']); // returns null
+PHP::foo(); // returns null
 ```
 
 ## Author

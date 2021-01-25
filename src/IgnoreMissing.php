@@ -2,12 +2,13 @@
 
 namespace PHP;
 
-class PHP implements PHPInterface
+class IgnoreMissing implements PHPInterface
 {
     /**
      * Static calls are forwarded to the requested
      * function with the arguments provided.
-     * Then, we return the function result.
+     * If it does not exist, we skip the call.
+     * Otherwise, we return the function result.
      *
      * @param mixed $name
      * @param array $arguments
@@ -16,6 +17,10 @@ class PHP implements PHPInterface
      */
     public static function __callStatic($name, $arguments)
     {
+        if (!function_exists($name)) {
+            return null;
+        }
+
         return call_user_func_array($name, $arguments);
     }
 }
