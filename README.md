@@ -120,7 +120,6 @@ This can be useful if you have a function that you cannot mockup for some reason
 ```php
 use PHP\IgnoreMissing as PHP;
 
-// PHP Built-in functions
 PHP::http_build_query(['foo' => 'bar']); // returns 'foo=bar'
 PHP::foo(); // returns null instead of triggering a "Call to undefined function" error
 ```
@@ -134,7 +133,6 @@ It does not matter if the function exists or not.
 ```php
 use PHP\IgnoreAlways as PHP;
 
-// PHP Built-in functions
 PHP::http_build_query(['foo' => 'bar']); // returns null
 PHP::foo(); // returns null
 ```
