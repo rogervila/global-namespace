@@ -18,7 +18,7 @@ class IgnoreMissing implements PHPInterface
     public static function __callStatic($name, $arguments)
     {
         if (!function_exists($name)) {
-            return;
+            return null;
         }
 
         return call_user_func_array($name, $arguments);

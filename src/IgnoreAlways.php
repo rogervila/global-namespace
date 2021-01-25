@@ -14,6 +14,6 @@ class IgnoreAlways implements PHPInterface
      */
     public static function __callStatic($name, $arguments)
     {
-        return;
+        return null;
     }
 }
