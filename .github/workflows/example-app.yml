@@ -1,13 +1,18 @@
 name: example-app
 
 on: push
+
+defaults:
+  run:
+    working-directory: ./examples/random-app-example
+
 jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-latest]
         php: [8.0, 7.4]
 
     name: PHP ${{ matrix.php }} - ${{ matrix.os }}
@@ -26,7 +31,7 @@ jobs:
         run: composer selfupdate
 
       - name: Install dependencies
-        run: cd ./examples/random-app && composer update --prefer-dist --no-interaction
+        run: composer update --prefer-dist --no-interaction
 
       - name: Execute tests
-        run: cd ./examples/random-app && vendor/bin/phpunit
+        run: vendor/bin/phpunit
