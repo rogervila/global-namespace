@@ -1,6 +1,5 @@
 [![StyleCI](https://github.styleci.io/repos/332196097/shield?branch=main)](https://github.styleci.io/repos/332196097)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rogervila_global-namespace&metric=alert_status)](https://sonarcloud.io/dashboard?id=rogervila_global-namespace)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=rogervila_global-namespace&metric=coverage)](https://sonarcloud.io/dashboard?id=rogervila_global-namespace)
 
 [![Latest Stable Version](https://poser.pugx.org/rogervila/global-namespace/v/stable)](https://packagist.org/packages/rogervila/global-namespace)
 [![Total Downloads](https://poser.pugx.org/rogervila/global-namespace/downloads)](https://packagist.org/packages/rogervila/global-namespace)
