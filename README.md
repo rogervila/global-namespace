@@ -1,4 +1,5 @@
 [![Build Status](https://github.com/rogervila/global-namespace/workflows/build/badge.svg)](https://github.com/rogervila/global-namespace/actions)
+[![Example Application Status](https://github.com/rogervila/global-namespace/workflows/example-app/badge.svg)](https://github.com/rogervila/global-namespace/tree/main/examples/random-app-example)
 [![StyleCI](https://github.styleci.io/repos/332196097/shield?branch=main)](https://github.styleci.io/repos/332196097)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rogervila_global-namespace&metric=alert_status)](https://sonarcloud.io/dashboard?id=rogervila_global-namespace)
 
@@ -114,6 +115,10 @@ final class AppTest extends \PHPUnit\Framework\TestCase
     }
 }
 ```
+
+> Check this [demo application](https://github.com/rogervila/global-namespace/tree/main/examples/random-app-example) for a more complete example
+
+## About
 
 This library calls any global PHP function, not only those that are built-in.
 
