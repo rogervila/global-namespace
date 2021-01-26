@@ -56,13 +56,36 @@ class App
     public function run()
     {
         $result = PHP::rand(0, 1);
-
         //...
     }
 }
 ```
 
-Nice. Now you can mockup `rand()` with [Mockery](https://github.com/mockery/mockery) and assert your code:
+This works as expected but is not yet fully testeable because the `PHP` dependency is hardcoded and it cannot be mocked.
+
+Let's add it in the constructor so we can use any `PHP` implementation.
+
+```php
+use PHP\PHP;
+
+class App
+{
+    private PHP $php;
+
+    public function __construct(PHP $php)
+    {
+        $this->php = $php;
+    }
+
+    public function run()
+    {
+        $result = $this->php::rand(0, 1);
+        //...
+    }
+}
+```
+
+Nice. Now you can mockup `rand()` with [Mockery](https://github.com/mockery/mockery) and assert the application code:
 
 ```php
 final class AppTest extends \PHPUnit\Framework\TestCase
@@ -82,6 +105,9 @@ final class AppTest extends \PHPUnit\Framework\TestCase
             1,
             $php::rand()
         );
+
+        // Create the instance with the mocked PHP implementation
+        $app = new App($php);
 
         // Do your application assertions here
         // ...
@@ -103,8 +129,9 @@ PHP::json_decode('{"foo": "bar"}'); // return ['foo' => 'bar']
 
 // For WordPress projects
 PHP::wp_redirect('/') // redirects to home
+// etc...
 
-// Literaly, any global function, built-in or not, could be listed here
+// Literaly, any function, built-in or not, could be listed here
 ```
 
 ## Helper classes
@@ -121,7 +148,10 @@ This can be useful if you have a function that you cannot mockup for some reason
 use PHP\IgnoreMissing as PHP;
 
 PHP::http_build_query(['foo' => 'bar']); // returns 'foo=bar'
+
 PHP::foo(); // returns null instead of triggering a "Call to undefined function" error
+
+// missing functions return null. existing functions are called
 ```
 
 ### IgnoreAlways
@@ -134,7 +164,10 @@ It does not matter if the function exists or not.
 use PHP\IgnoreAlways as PHP;
 
 PHP::http_build_query(['foo' => 'bar']); // returns null
+
 PHP::foo(); // returns null
+
+// all functions return null
 ```
 
 ## Author
