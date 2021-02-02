@@ -11,9 +11,9 @@
 
 # Global Namespace
 
-This library provides a namespace for functions that dare called globally, like PHP Built-in functions.
+This library provides a namespace for functions that are called globally, like PHP Built-in functions.
 
-This might sound weird, so let me introduce an example to try to show what it can do.
+This might sound weird, so let me introduce an example to show what it can do.
 
 ## Example
 
@@ -37,7 +37,8 @@ class App
 }
 ```
 
-Now, you would start to create the test to assert the results, but you will find an issue: **How can we mockup rand() to force it to return 0 or 1?**
+If you create a test to assert the results you will find a stopper: **How can we mockup rand() to force it to return 0 or 1?**. This package provides a solution for this question.
+
 
 First, require this package on your application.
 
@@ -120,7 +121,7 @@ final class AppTest extends \PHPUnit\Framework\TestCase
 
 ## About
 
-This library calls any global PHP function, not only those that are built-in.
+This library calls any global function, not only those that are built-in.
 
 ```php
 use PHP\PHP;
@@ -147,7 +148,7 @@ If you do not want to use Mockery, or if you are working on test environment tha
 
 It works the same way, but it will ignore a function if it does not exist.
 
-This can be useful if you have a function that you cannot mockup for some reason.
+This can be useful if you have a function that you cannot be mocked for some reason.
 
 ```php
 use PHP\IgnoreMissing as PHP;
