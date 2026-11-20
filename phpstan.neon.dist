@@ -1,0 +1,30 @@
+# PHPStan configuration. Run it with "composer analyse".
+# It needs PHPStan 2 (PHP 7.4+). On PHP 7.2 and 7.3 Composer installs
+# PHPStan 1.12, which cannot parse the PHP 8.5 test fixtures.
+parameters:
+    level: max
+    # The newest syntax used in the repository (pipe operator in a PHP 8.5
+    # test fixture). The library itself still runs on PHP 7.2.
+    phpVersion: 80500
+    paths:
+        - src
+        - tests
+    ignoreErrors:
+        # PHP\PHP, PHP\IgnoreMissing, PHP\IgnoreAlways (and their mocks and
+        # subclasses) resolve every static call at runtime with __callStatic(),
+        # so no static analyser can know these "methods". Projects that use the
+        # library need the same rule; see "Static analysis" in the README.
+        -
+            identifier: staticMethod.notFound
+            message: '#^Call to an undefined static method (PHP\\(PHP|IgnoreMissing|IgnoreAlways|PHPInterface)|Mockery\\.+|Tests\\.+)::#'
+        # Callables like [PHP::class, 'strtoupper'] and 'PHP\PHP::strtoupper'
+        # also work at runtime through __callStatic(), for the same reason.
+        -
+            identifier: argument.type
+            message: '#^Parameter \#1 \$callback of .+, (array\{)?''PHP\\{1,2}(PHP|IgnoreMissing|IgnoreAlways)(''|::)#'
+        # PHP\PHP forwards any name on purpose. When the name is not a function,
+        # PHP itself throws a TypeError (PHP 8) or raises a warning (PHP 7).
+        -
+            identifier: argument.type
+            message: '#^Parameter \#1 \$callback of function call_user_func_array expects callable\(\): mixed, string given\.$#'
+            path: src/PHP.php

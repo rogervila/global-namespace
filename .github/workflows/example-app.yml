@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        php: ['8.3', '8.2', '8.1', '8.0', '7.4']
+        php: ['8.6', '8.5', '8.4', '8.3', '8.2', '8.1', '8.0', '7.4']
 
     name: PHP ${{ matrix.php }} - ${{ matrix.os }}
 
@@ -34,4 +34,5 @@ jobs:
         run: composer update --prefer-dist --no-interaction
 
       - name: Execute tests
-        run: vendor/bin/phpunit
+        # PHP 8.2+ installs PHPUnit 11 or newer, which can fail on deprecations.
+        run: composer ${{ fromJSON(matrix.php) >= 8.2 && 'test:strict' || 'test' }}

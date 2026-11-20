@@ -10,8 +10,8 @@ class IgnoreMissing implements PHPInterface
      * If it does not exist, we skip the call.
      * Otherwise, we return the function result.
      *
-     * @param mixed $name
-     * @param array $arguments
+     * @param string $name
+     * @param array<int|string, mixed> $arguments
      *
      * @return mixed
      */

@@ -9,8 +9,8 @@ class PHP implements PHPInterface
      * function with the arguments provided.
      * Then, we return the function result.
      *
-     * @param mixed $name
-     * @param array $arguments
+     * @param string $name
+     * @param array<int|string, mixed> $arguments
      *
      * @return mixed
      */
