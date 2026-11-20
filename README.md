@@ -285,7 +285,7 @@ $app = new App(new FakePHP()); // App type-hints PHP\PHP: FakePHP is a PHP\PHP
 Static properties keep their values between tests, so reset them in `setUp()`. The example application has a complete version in [`tests/Doubles/FakePHP.php`](examples/random-app-example/tests/Doubles/FakePHP.php). For one-off doubles, an anonymous class works too:
 
 ```php
-$php = new class implements \PHP\PHPInterface {
+$php = new class () implements \PHP\PHPInterface {
     public static function __callStatic($name, $arguments)
     {
         return $name === 'time' ? 1700000000 : null;
@@ -434,7 +434,7 @@ composer analyse         # PHPStan at level max (PHPStan 2, PHP 7.4+)
 composer test:coverage   # clover.xml and junit-logfile.xml (PHPUnit 9+, Xdebug or PCOV)
 ```
 
-Code style follows PSR-2 (checked by StyleCI). The tests must keep running on every PHP version from 7.2: read [`AGENTS.md`](AGENTS.md) for the compatibility rules before you change them.
+Code style follows PSR-12 (checked by StyleCI). The tests must keep running on every PHP version from 7.2: read [`AGENTS.md`](AGENTS.md) for the compatibility rules before you change them.
 
 ## Documentation for AI assistants
 

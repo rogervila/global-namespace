@@ -1,5 +1,10 @@
-preset: psr2
+preset: psr12
 
+# StyleCI parses PHP 8.4 at most, so it cannot read PHP 8.5 syntax like
+# the pipe operator (|>). The test fixtures that need PHP 8.5 are skipped.
+# Remove the not-name rule once StyleCI supports PHP 8.5.
 finder:
   exclude:
     - "vendor"
+  not-name:
+    - "php85-*.php"

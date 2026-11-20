@@ -106,7 +106,7 @@ final class PHPInterfaceTest extends TestCase
             return $php::strtoupper($text);
         };
 
-        $custom = new class implements PHPInterface {
+        $custom = new class () implements PHPInterface {
             /**
              * @param string $name
              * @param array<int|string, mixed> $arguments

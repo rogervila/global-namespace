@@ -94,7 +94,7 @@ PHPUnit needs the `mbstring` extension. Some pre-release images (for example `ph
 
 ## Style
 
-- PSR-2, checked by StyleCI (`.styleci.yml`, preset `psr2`). Four spaces, LF line endings.
+- PSR-12, checked by StyleCI (`.styleci.yml`, preset `psr12`). Four spaces, LF line endings.
 - Test methods use the existing `test_snake_case` naming.
 - Comments explain why, in short plain sentences. Keep existing comments.
 
