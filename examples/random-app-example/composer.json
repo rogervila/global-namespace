@@ -8,6 +8,18 @@
             "email": "roger.vila.camon@hp.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../..",
+            "options": {
+                "symlink": true,
+                "versions": {
+                    "rogervila/global-namespace": "dev-main"
+                }
+            }
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Random\\": "src/"
@@ -24,7 +36,15 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.0",
-        "phpunit/phpunit": "^9.0 || ^10.0"
+        "phpunit/phpunit": "^9.0 || ^10.0 || ^11.0 || ^13.0"
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:strict": "phpunit --fail-on-deprecation --fail-on-phpunit-deprecation --fail-on-notice --fail-on-warning --fail-on-risky --display-deprecations --display-phpunit-deprecations --display-notices --display-warnings"
+    },
+    "scripts-descriptions": {
+        "test": "Run the PHPUnit test suite (PHPUnit 9.6 to 13).",
+        "test:strict": "Run the tests and fail on deprecations, notices and warnings (PHPUnit 11+, PHP 8.2+)."
     },
     "config": {
         "optimize-autoloader": true,

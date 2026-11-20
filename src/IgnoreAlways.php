@@ -7,8 +7,8 @@ class IgnoreAlways implements PHPInterface
     /**
      * Static calls are ignored.
      *
-     * @param mixed $name
-     * @param array $arguments
+     * @param string $name
+     * @param array<int|string, mixed> $arguments
      *
      * @return mixed
      */

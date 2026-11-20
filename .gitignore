@@ -6,3 +6,6 @@ clover.xml
 composer.lock
 .phpunit.result.cache
 index.php
+.agents
+.claude
+skills-lock.json

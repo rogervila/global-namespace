@@ -1,0 +1,62 @@
+# Global Namespace (rogervila/global-namespace)
+
+> PHP library that calls any global function through a static proxy class, so code that depends on functions like rand(), time() or file_get_contents() can be tested with mocks. `PHP\PHP::rand(0, 1)` runs `rand(0, 1)`. No runtime dependencies. PHP 7.2 to 8.6.
+
+Install with `composer require rogervila/global-namespace`. Namespace `PHP\`.
+
+## API
+
+- `PHP\PHPInterface`: interface with one method, `public static function __callStatic($name, $arguments)`. Type-hint it to accept any implementation.
+- `PHP\PHP`: `PHP::fn(...$args)` returns `call_user_func_array('fn', $args)`. A missing function throws TypeError (PHP 8) or raises a warning and returns null (PHP 7).
+- `PHP\IgnoreMissing`: like `PHP\PHP`, but returns null without errors when `function_exists()` is false. For optional extensions, newer PHP functions and framework helpers.
+- `PHP\IgnoreAlways`: never calls the function and always returns null. A null object for side effects.
+
+## Usage pattern
+
+```php
+use PHP\PHPInterface;
+
+final class Greeter
+{
+    private $php;
+
+    public function __construct(PHPInterface $php) // production: new \PHP\PHP()
+    {
+        $this->php = $php;
+    }
+
+    public function greet(): string
+    {
+        return ((int) $this->php::date('G')) < 12 ? 'Good morning' : 'Hello'; // always "::", never "->"
+    }
+}
+
+// Test:
+$php = Mockery::mock(\PHP\PHP::class);
+$php->shouldReceive('date')->once()->with('G')->andReturn('9');
+(new Greeter($php))->greet(); // 'Good morning'
+```
+
+## Rules and pitfalls
+
+- Call functions with `$this->php::fn()`. `$this->php->fn()` fails on the real classes (no `__call()`) but works on Mockery mocks, so tests can hide the bug.
+- Hard-coded `PHP::fn()` calls cannot be mocked: inject the instance.
+- By-reference parameters (`sort()`, `preg_match()` matches...) receive copies: PHP raises a warning and the caller's variable is not changed.
+- Language constructs (`isset`, `empty`, `echo`, `include`...) are not functions. `exit()`/`die()` are functions only since PHP 8.4.
+- `compact()`, `extract()`, `func_get_args()`, `get_defined_vars()` cannot be called dynamically (Error on PHP 8).
+- Namespaced functions: `$fn = 'App\helper'; PHP::$fn()`. Names are case-insensitive.
+- Security: never build the function name from user input. `PHP::$name()` can call any function (`exec()`, `unlink()`...); use a fixed allowlist.
+- Named arguments (8.0+), first-class callables `PHP::strtoupper(...)` (8.1+) and the pipe operator (8.5+) work.
+- Mockery: unexpected calls throw `BadMethodCallException`; `makePartial()` does not forward static calls, use `->passthru()`; `shouldIgnoreMissing()` and `Mockery::spy()` work; use one mock per class per test.
+- PHPStan reports calls as `staticMethod.notFound` (level 1+): ignore that error for `PHP\PHP`, `PHP\IgnoreMissing`, `PHP\IgnoreAlways` and `PHP\PHPInterface` (the README has the configuration). Results are `mixed`.
+- Overhead is about 0.2 µs per call.
+
+## Docs
+
+- [README](https://github.com/rogervila/global-namespace/blob/main/README.md): full guide, behaviour reference, limitations, static analysis
+- [Example application](https://github.com/rogervila/global-namespace/tree/main/examples/random-app-example): tested use cases (time, randomness, files, network, environment, headers, logging, sleeping, optional extensions, PHP 8.4 to 8.6 functions)
+- [Tests](https://github.com/rogervila/global-namespace/tree/main/tests): executable specification of the behaviour
+
+## Optional
+
+- [AGENTS.md](https://github.com/rogervila/global-namespace/blob/main/AGENTS.md): rules for agents that change this repository

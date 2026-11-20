@@ -16,7 +16,8 @@
     "require-dev": {
         "php": "^7.2 || ^8.0",
         "mockery/mockery": "1.3.* || 1.4.* || 1.5.* || 1.6.*",
-        "phpunit/phpunit": "^8.0 || ^9.0 || ^11.0 || ^13.0"
+        "phpstan/phpstan": "^1.12 || ^2.1",
+        "phpunit/phpunit": "^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0 || ^13.0"
     },
     "config": {
         "optimize-autoloader": true,
@@ -31,7 +32,26 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "tests/Fixtures/global-functions.php",
+            "tests/Fixtures/namespaced-functions.php"
+        ]
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:strict": "phpunit --fail-on-deprecation --fail-on-phpunit-deprecation --fail-on-notice --fail-on-warning --fail-on-risky --display-deprecations --display-phpunit-deprecations --display-notices --display-warnings",
+        "test:coverage": [
+            "@putenv XDEBUG_MODE=coverage",
+            "phpunit --coverage-filter src --coverage-clover clover.xml --log-junit junit-logfile.xml"
+        ],
+        "analyse": "phpstan analyse --no-progress"
+    },
+    "scripts-descriptions": {
+        "test": "Run the PHPUnit test suite (PHPUnit 8.5 to 13).",
+        "test:strict": "Run the tests and fail on deprecations, notices and warnings (PHPUnit 11+, PHP 8.2+).",
+        "test:coverage": "Write clover.xml and junit-logfile.xml (PHPUnit 9+, needs Xdebug or PCOV).",
+        "analyse": "Run PHPStan at level max on src/ and tests/ (PHPStan 2, PHP 7.4+)."
     },
     "archive": {
         "exclude": [

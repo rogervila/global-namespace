@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         bootstrap="vendor/autoload.php"
+<!--
+    This file only uses settings that exist from PHPUnit 8.5 to PHPUnit 13,
+    so the same configuration runs without warnings on PHP 7.2 to 8.6.
+    Coverage and log files are opt-in: run "composer test:coverage".
+    Stricter checks for PHPUnit 11+: run "composer test:strict".
+-->
+<phpunit bootstrap="vendor/autoload.php"
          colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
+         backupGlobals="false"
          processIsolation="false"
-         stopOnFailure="false">
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src</directory>
-        </whitelist>
-    </filter>
-    <logging>
-        <log type="coverage-clover" target="clover.xml"/>
-        <log type="junit" target="junit-logfile.xml"/>
-    </logging>
+         stopOnFailure="false"
+         failOnRisky="true"
+         failOnWarning="true"
+         beStrictAboutOutputDuringTests="true">
     <testsuites>
         <testsuite name="Tests">
             <directory suffix="Test.php">./tests</directory>

@@ -9,7 +9,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
-        php: ['8.3', '8.2', '8.1', '8.0', '7.4', '7.3', '7.2']
+        php: ['8.6', '8.5', '8.4', '8.3', '8.2', '8.1', '8.0', '7.4', '7.3', '7.2']
 
     name: PHP ${{ matrix.php }} - ${{ matrix.os }}
 
@@ -31,6 +31,28 @@ jobs:
         run: composer update --prefer-dist --no-interaction
 
       - name: Execute tests
-        run: vendor/bin/phpunit
+        # PHP 8.2+ installs PHPUnit 11 or newer, which can fail on deprecations.
+        run: composer ${{ fromJSON(matrix.php) >= 8.2 && 'test:strict' || 'test' }}
         env:
           XDEBUG_MODE: coverage
+
+  static-analysis:
+    runs-on: ubuntu-latest
+
+    name: Static analysis
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: none
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-interaction
+
+      - name: Run PHPStan
+        run: composer analyse
